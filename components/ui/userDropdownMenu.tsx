@@ -25,9 +25,9 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { userProfile } from "@/public/assets/page";
 import Link from "next/link";
-import UserIcon from "./icons/userDropdown/user";
-import { splitName } from "../functions/split-name";
 import { useRouter } from "next/navigation";
+import { splitName } from "@/utils/functions/split-name";
+import UserIcon from "../icons/userDropdown/user";
 
 interface UserDropDownProps {
   Session?: Session | null;
@@ -61,10 +61,16 @@ const UserDropDown = ({ Session }: UserDropDownProps) => {
                 </Avatar>
               ) : (
                 <div className="flex items-center gap-2">
-                  <h4 className="flex items-center gap-1 text-2xl italic text-primaryRed ">
-                    <span className="text-lg font-bold text-white">Hi</span>!
-                    <p className="text-xl font-bold text-white">{firstName}</p>
-                  </h4>
+                  {firstName ? (
+                    <h4 className="flex items-center gap-1 text-2xl italic text-primaryRed ">
+                      <span className="text-lg font-bold text-white">Hi</span>!
+                      <p className="text-xl font-bold text-white">
+                        {firstName}
+                      </p>
+                    </h4>
+                  ) : (
+                    ""
+                  )}
 
                   <Avatar className="h-10 w-10">
                     <AvatarFallback>
@@ -111,7 +117,7 @@ const UserDropDown = ({ Session }: UserDropDownProps) => {
             )}
             {Session && (
               <DropdownMenuItem
-                onClick={() => router.push("/dashboard/address")}
+              //onClick={() => router.push("/billing")}
               >
                 <CreditCard className={iconClasses} />
                 <span>Billing</span>
