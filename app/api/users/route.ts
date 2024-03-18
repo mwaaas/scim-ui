@@ -1,6 +1,5 @@
 import axiosInstance from "@/utils/axios";
 import { NextRequest, NextResponse } from "next/server";
-//import { NextApiRequest, NextApiResponse } from "next/types";
 
 export async function GET(req: NextRequest, res: NextResponse) {
     if (req.method !== "GET") {

@@ -1,24 +1,22 @@
-"use client";
-import { useEffect, useState } from "react";
+"use client"
 import UserInfo from "./userInfo";
+import { useEffect, useState } from "react";
 import { ListUser } from "@/types/scim-user";
 import axios from "axios";
-
 export default function UsersList() {
   const [users, setUsers] = useState<ListUser[]>();
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios("/api/getUsers");
-        if (response.status !== 200) {
-          throw new Error(`Failed to fetch users: ${response.statusText}`);
-        }
-        setUsers(response.data);
-      } catch (error) {
-        console.error("user listing error", error);
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("/api/users");
+      if (response.status !== 200) {
+        throw new Error(`Failed to fetch users: ${response.statusText}`);
       }
-    };
-
+      setUsers(response.data);
+    } catch (error) {
+      console.error("user listing error", error);
+    }
+  };
+  useEffect(() => {
     fetchUsers();
   }, []);
   return (
