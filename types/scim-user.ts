@@ -34,7 +34,7 @@ export interface CreateUser {
         familyName: string;
         givenName: string;
     };
-    active: boolean;
+    active: boolean|undefined;
     emails: {
         value: string;
     }[];
