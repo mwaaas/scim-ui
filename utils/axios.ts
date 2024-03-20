@@ -6,7 +6,7 @@ const scimToken=env.SCIM_TOKEN
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
-    timeout: 15000,
+    timeout: 120000,
     headers: {
         'Content-Type': "application/scim+json",
         'Accept':'*/*',

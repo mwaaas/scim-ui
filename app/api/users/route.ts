@@ -1,4 +1,5 @@
 import axiosInstance from "@/utils/axios";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, res: NextResponse) {
@@ -22,5 +23,48 @@ export async function GET(req: NextRequest, res: NextResponse) {
     } catch (error) {
         console.error("api getUsers error", error)
         return NextResponse.json({ msg: "Unable to fetch user" }, { status: 500 })
+    }
+}
+
+export async function POST(request: NextRequest) {
+    if (request.method !== "POST") {
+        return NextResponse.json(
+            { message: "Request not supported", },
+            {
+                status: 405, headers: { "Allow": "POST" }
+            }
+        )
+    };
+    try {
+        const userData = await request.json()
+        //console.log("creating user, userData:", userData)
+        const response = await axiosInstance.post("/Users", userData);
+        if (response.status !== 201) {
+            throw new Error(`Axios error while creating user  ${response.statusText}`);
+        }
+        return NextResponse.json({ msg: "successfully created user" }, { status: 201 })
+    } catch (err) {
+        //console.log('Encountered Error:', err)
+        // If the error is an instance of AxiosError, return only the headers and response objects
+        if (err instanceof axios.AxiosError) {
+            const { config, response } = err
+            const adapter = config?.adapter
+            const headers = config?.headers
+            const timeout = config?.timeout
+            return NextResponse.json(
+                {
+                    adapter: adapter,
+                    timeout: timeout,
+                    headers: headers,
+                    response: response
+                }
+            )
+        }
+        return NextResponse.json({
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:Error"],
+            detail: "Unable to create User",
+            status: 500,
+
+        })
     }
 }
