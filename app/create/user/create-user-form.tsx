@@ -28,7 +28,7 @@ const CreateUserForm = () => {
   const [salutation, setSalutation] = useState("");
   // track submission
   const [pending, setPending] = useState(false);
-  const [back, setBack] = useState<boolean>(true);
+  const [back, setBack] = useState<boolean>();
   const [yesChecked, setYesChecked] = useState(false);
   const [noChecked, setNoChecked] = useState(false);
   const router = useRouter();
@@ -70,9 +70,12 @@ const CreateUserForm = () => {
       .refine(
         (value): boolean => {
           const { familyName, givenName } = userData.name;
-          return value !== familyName && value !== givenName; // Return boolean value
+          return (
+            value.toLowerCase() !== familyName?.toLowerCase() &&
+            value !== givenName?.toLowerCase()
+          ); // Return boolean value
         },
-        { message: "Username cannot be equal to familyName or givenName" },
+        { message: "Username cannot be equal to first Name or sir name" },
       ),
   });
 
@@ -91,6 +94,7 @@ const CreateUserForm = () => {
     }
     return "Save";
   };
+
   function clearFields() {
     setUserData({
       schemas: [""],
@@ -149,6 +153,7 @@ const CreateUserForm = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setBack(false);
       setPending(true);
       // Set the externalId field in userData before validation and submission
       setUserData((prevUserData) => ({
@@ -437,7 +442,7 @@ const CreateUserForm = () => {
                 type="button"
                 variant="outline"
                 onClick={goBack}
-                className="max-w-Xs sm:min-w-[200px] h-8 gap-2 bg-yellow-400 font-bold hover:bg-primary mdl:min-w-[200px] dark:bg-yellow-400"
+                className="h-8 max-w-Xs gap-2 bg-yellow-400 font-bold hover:bg-primary sm:min-w-[200px] mdl:min-w-[200px] dark:bg-yellow-400"
               >
                 <List className="text-700 h-7 w-12 fill-white" />
                 <span className="text-sm normal-case text-white">Back</span>

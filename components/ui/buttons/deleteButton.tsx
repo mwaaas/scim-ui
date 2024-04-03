@@ -1,20 +1,21 @@
 "use client";
 import { useState } from "react";
 import { Button } from "./button";
+import { Modal } from "../modal";
 
 interface DelProps {
   label: string;
   onDelete: () => void;
   isPending: boolean;
-  itemName:string;
+  itemName: string;
 }
 
 export default function DeleteButton(props: DelProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   if (showConfirm) {
     return (
-      <div className="fixed inset-0 flex h-full items-center justify-center bg-neutral-700">
-        <div className="rounded-lg border bg-base-100 dark:bg-white p-8">
+      <Modal>
+        <div className="rounded-lg border bg-base-100 p-8 dark:bg-white">
           <div className="flex gap-2">
             <p className="text-primaryRed">Are you sure you want to delete?</p>
             <span className="text-blue-600">{props.itemName}</span>
@@ -29,7 +30,7 @@ export default function DeleteButton(props: DelProps) {
               Cancel
             </Button>
             <Button
-              className="h-7 bg-primaryRed text-white hover:text-base-100 hover:bg-primaryRed"
+              className="h-7 bg-primaryRed text-white hover:bg-primaryRed hover:text-base-100"
               type="button"
               disabled={props.isPending}
               variant={"outline"}
@@ -42,7 +43,7 @@ export default function DeleteButton(props: DelProps) {
             </Button>
           </div>
         </div>
-      </div>
+      </Modal>
     );
   }
 

@@ -12,9 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="">
       <body className=" bg-appBg font-bodyRoboto">
-        <main className="max-w-container px-4">
+        <main className="w-full px-4">
           <Toaster position="top-center" reverseOrder={false} />
           {children}
         </main>

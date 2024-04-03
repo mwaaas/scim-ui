@@ -10,7 +10,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
     try {
         const response = await axiosInstance.get('/Users');
-
         if (response.status !== 200) {
             throw new Error(`Failed to fetch users: ${response.statusText}`);
         }
@@ -19,10 +18,26 @@ export async function GET(req: NextRequest, res: NextResponse) {
         //console.log('users',users)
         //send list of user as Api res
         return NextResponse.json(users, { status: 200 })
-
     } catch (error) {
-        console.error("api getUsers error", error)
-        return NextResponse.json({ msg: "Unable to fetch user" }, { status: 500 })
+        if (error instanceof axios.AxiosError) {
+            const { config, response } = error
+            const adapter = config?.adapter
+            const headers = config?.headers
+            const timeout = config?.timeout
+            return NextResponse.json(
+                {
+                    adapter: adapter,
+                    timeout: timeout,
+                    headers: headers,
+                    response: response?.data
+                }
+            )
+        }
+        return NextResponse.json({
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:Error"],
+            detail: "Unable to fetch Users",
+            status: 500,
+        })
     }
 }
 
@@ -56,7 +71,7 @@ export async function POST(request: NextRequest) {
                     adapter: adapter,
                     timeout: timeout,
                     headers: headers,
-                    response: response
+                    response: response?.data
                 }
             )
         }
