@@ -1,10 +1,10 @@
-interface Name {
-    formatted: string,
-    familyName: string,
-    givenName: string
+export interface Name{
+    formatted?: string,
+    familyName?: string,
+    givenName?: string
 }
 
-export interface ListUser {
+export interface ListUsers {
     id: string;
     meta: {
         created: string;
@@ -29,15 +29,10 @@ export interface ListUser {
 export interface CreateUser {
     schemas: string[];
     externalId: string;
-    name: {
-        formatted: string;
-        familyName: string;
-        givenName: string;
-    };
-    active: boolean;
+    name:Name;
+    active: boolean|undefined;
     emails: {
         value: string;
     }[];
     userName: string;
 }
-
