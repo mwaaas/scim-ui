@@ -36,4 +36,3 @@ export interface CreateUser {
     }[];
     userName: string;
 }
-
